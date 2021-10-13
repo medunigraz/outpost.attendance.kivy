@@ -282,7 +282,7 @@ class AttendanceApp(App):
     def logo_touch(self, element, touch):
         if not self.root.logo.collide_point(*touch.pos):
             return
-        logger.warning(f"Touch on logo")
+        logger.debug(f"Touch on logo")
         view = ModalView(size_hint=(0.8, 0.5))
         text = '\n'.join([f'{n}: {a}' for n, a in self.network.items()])
         view.add_widget(Label(text=text))
@@ -365,7 +365,7 @@ class AttendanceApp(App):
             "python": python_version(),
             "version": ".".join(map(str, __version__)),
         }
-        logger.warning(f"Uploading config: {data}")
+        logger.debug(f"Uploading config: {data}")
         url = furl(self.config.get("api", "base_url"))
         url.path /= "v1/attendance/terminal/"
         url.path /= str(self.config.getint("api", "terminal"))
@@ -391,7 +391,7 @@ class AttendanceApp(App):
             return
         if self.token is None:
             return
-        logger.warning(f"Taking screenshot")
+        logger.debug(f"Taking screenshot")
         try:
             proc = run(("/usr/bin/import", "-window", "root", "png:-"), capture_output=True, timeout=5, check=True)
         except (TimeoutExpired, CalledProcessError):

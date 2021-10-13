@@ -1,0 +1,268 @@
+#:kivy 1.10.1
+#:import Transition kivy.uix.screenmanager.SwapTransition
+
+<QuestionLabel>:
+    font_size: dp(50)
+    size_hint: 1,None
+
+<AnswerButton>:
+    font_size: 40
+    color: 0.1,0.5,0.6,1
+    size_hint: 1,None
+    on_press: app.answer(self.data)
+
+<Loading>:
+    canvas.before:
+        PushMatrix
+        Rotate:
+            angle: root.angle
+            axis: 0, 0, 1
+            origin: root.center
+    canvas.after:
+        PopMatrix
+    Image:
+        source: 'images/spinner.png'
+        size_hint: None, None
+        size: 200, 200
+        pos_hint: {'center_x': 0.5, 'center_y': 0.5}
+
+<Flipper>:
+    image: image
+    cycle: ("images/id-card.png", "images/arrow-circle-right.png")
+    canvas.before:
+        PushMatrix
+        Scale:
+            x: root.scale
+            y: root.scale
+            origin: root.center
+    canvas.after:
+        PopMatrix
+    Image:
+        id: image
+        #source: 'images/spinner.png'
+        size_hint: None, None
+        size: 200, 200
+        pos_hint: {'center_x': 0.5, 'center_y': 0.5}
+
+<Attendance>:
+    on_touch_down: app.activate()
+    manager: manager
+    logo: logo
+    canvas:
+        Color:
+            rgb: 0,0.488,0.191
+        Rectangle:
+            size: self.size
+            pos: self.pos
+
+    Label:
+        text: app.time
+        pos_hint: {"right":1, "top":1}
+        size_hint: 0.5,0.2
+        font_size: dp(24)
+
+    Image:
+        id: logo
+        source: 'images/logo.png'
+        pos_hint: {"x":0, "top":1}
+        size_hint: 0.5,0.2
+        keep_ratio: True
+
+    #TouchButton:
+    #    text: "Tech With"
+    #    pos_hint: {"x":0.5, "top":1}
+
+    #Button:
+    #    text:"Tim"
+    #    on_press: app.select("bla")
+
+
+    ScreenManager:
+        id: manager
+        name: "Main"
+        pos_hint: {"x":0, "top":0.8}
+        size_hint: 1,0.8
+        transition: Transition(duration=0.7)
+
+        Screen:
+            name:"Maintainance"
+
+            canvas:
+                Color:
+                    rgb: 0.289,0.289,0.289
+                Rectangle:
+                    size: self.size
+                    pos: self.pos
+
+            BoxLayout:
+                orientation: 'horizontal'
+                spacing: dp(10)
+                padding: dp(10)
+
+                Label:
+                    text: "Verbinde mit\n Server ..."
+                    font_size: dp(50)
+                    color: 1,1,1,1
+
+                #Image:
+                #    source: 'images/wifi.png'
+                #    size_hint: 0.5,1
+                Loading:
+                    size_hint: 0.5,1
+
+        Screen:
+            name:"RequestCard"
+            #icon: request_icon
+            canvas:
+                Color:
+                    rgb: 0.289,0.289,0.289
+                Rectangle:
+                    size: self.size
+                    pos: self.pos
+
+            BoxLayout:
+                orientation: 'horizontal'
+                spacing: dp(10)
+                padding: dp(10)
+
+                Label:
+                    text: "Bitte\nStudierendenkarte\nauflegen!"
+                    font_size: dp(50)
+                    color: 1,1,1,1
+                    text_size: self.size
+                    halign: 'center'
+                    valign: 'middle'
+
+        #        Image:
+        #            id: request_icon
+        #            source: 'images/id-card.png'
+        #            size_hint: 0.5,1
+                Flipper:
+                    size_hint: 0.5,1
+
+
+        Screen:
+            name:"Preflight"
+            canvas:
+                Color:
+                    rgb: 0.289,0.289,0.289
+                Rectangle:
+                    size: self.size
+
+            BoxLayout:
+                orientation: 'horizontal'
+                spacing: dp(10)
+                padding: dp(10)
+
+                Label:
+                    text: "Überprüfe Karte ..."
+                    font_size: dp(50)
+                    text_size: self.size
+                    halign: 'center'
+                    valign: 'middle'
+
+                Loading:
+                    size_hint: 0.5,1
+
+
+
+        Screen:
+            name:"Questions"
+            scroller: scroller
+            answers: answers
+            canvas:
+                Color:
+                    rgb: 0.289,0.289,0.289
+                Rectangle:
+                    size: self.size
+
+            ScrollView:
+                id: scroller
+                size: self.size
+
+                StackLayout:
+                    id: answers
+                    size_hint: 1,None
+                    padding: 5
+                    height: self.minimum_height
+
+
+
+        Screen:
+            name:"Clock"
+            canvas:
+                Color:
+                    rgb: 0.289,0.289,0.289
+                Rectangle:
+                    size: self.size
+
+            BoxLayout:
+                orientation: 'horizontal'
+                spacing: dp(10)
+                padding: dp(10)
+
+                Label:
+                    text: "Buche Karte ..."
+                    font_size: dp(50)
+                    text_size: self.size
+                    halign: 'center'
+                    valign: 'middle'
+
+                Loading:
+                    size_hint: 0.5,1
+
+
+        Screen:
+            name: "Confirmation"
+            message: confirmation_label
+            canvas:
+                Color:
+                    rgb: 0.289,0.289,0.289
+                Rectangle:
+                    size: self.size
+
+            BoxLayout:
+                orientation: 'horizontal'
+
+                Label:
+                    id: confirmation_label
+                    font_size: dp(50)
+                    size_hint: 0.6,1
+                    text_size: self.size
+                    halign: 'center'
+                    valign: 'middle'
+
+                Image:
+                    source: 'images/check-circle.png'
+                    size_hint: 0.4,1
+
+
+        ErrorScreen:
+            name:"Error"
+            message: error_label
+            image: error_image
+            canvas:
+                Color:
+                    rgb: 0.289,0.289,0.289
+                Rectangle:
+                    size: self.size
+
+            BoxLayout:
+                orientation: 'horizontal'
+
+                Label:
+                    id: error_label
+                    size_hint: 0.6,1
+                    font_size: dp(50)
+                    text_size: self.size
+                    halign: 'center'
+                    valign: 'middle'
+
+                Image:
+                    id: error_image
+                    source: 'images/exclamation-triangle.png'
+                    size_hint: 0.4,1
+
+
+        Screen:
+            name:"Settings"

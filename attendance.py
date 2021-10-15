@@ -445,8 +445,6 @@ class AttendanceApp(App):
 
         self.reset()
         self.cardid = "".join([("%X" % t).zfill(2) for t in uid[:4]])
-        self.cardid = "FEEA7A4A"
-        self.cardid = "13A46CE5"
         logger.info(f"Using cardid: {self.cardid}")
 
         self.root.manager.current = "Preflight"

@@ -52,7 +52,7 @@ from kivy.uix.modalview import ModalView
 from kivy.animation import Animation
 
 
-__version__ = (0, 0, 2)
+__version__ = (0, 0, 3)
 
 
 class ContextFilter(logging.Filter):
@@ -364,6 +364,7 @@ class AttendanceApp(App):
             "platform": platform(),
             "python": python_version(),
             "version": ".".join(map(str, __version__)),
+            "datetime": datetime.now().astimezone().isoformat(),
         }
         logger.debug(f"Uploading config: {data}")
         url = furl(self.config.get("api", "base_url"))
